@@ -1,2 +1,2 @@
-# Usuarios_Linux_AutomatizacionJenkins
-Pipeline declarativo en Jenkins que nos permite crear usuarios dentro de un sistema linux.
+# Linux_Users_Jenkins_Automation
+Declarative pipeline in Jenkins that allows us to create users within a Linux system.
