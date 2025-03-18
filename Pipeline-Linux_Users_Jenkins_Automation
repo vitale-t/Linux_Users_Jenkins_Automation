@@ -38,7 +38,7 @@ pipeline {
         stage('Contraseña') {
             steps {
                 script {
-                    // Generar contraseña temporal usando un método simple
+                    // Generar contraseña temporal
                     tempPassword = sh(script: 'date +%s | sha256sum | base64 | head -c 12', returnStdout: true).trim()
 
                     // Asignar la contraseña al usuario
