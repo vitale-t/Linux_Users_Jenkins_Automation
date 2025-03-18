@@ -1,37 +1,37 @@
 pipeline {
     agent any
     stages {
-        stage('Operador') {
+        stage('Operator') {
             steps {
-                script { operador = input(message: 'Login Operador:', parameters: [string(name: 'Operador')]) }
+                script { operator = input(message: 'Operator Login:', parameters: [string(name: 'Operator')]) }
             }
         }
-        stage('Crear Grupos y Usuarios') {
+        stage('Create Groups and Users') {
             steps {
                 script {
-                    sh "sudo groupadd Contabilidad || true"
-                    sh "sudo groupadd Finanzas || true"
-                    sh "sudo groupadd Tecnologia || true"
-                    nombre = input(message: 'Nombre:', parameters: [string(name: 'Nombre')])
-                    apellido = input(message: 'Apellido:', parameters: [string(name: 'Apellido')])
-                    departamento = input(message: 'Departamento:', parameters: [choice(choices: ['Contabilidad', 'Finanzas', 'Tecnologia'], name: 'Departamento')])
-                    usuario = "${nombre}.${apellido}".toLowerCase()
-                    sh "sudo useradd -m -s /bin/bash -c '${nombre} ${apellido}' -g ${departamento} ${usuario}"
+                    sh "sudo groupadd Accounting || true"
+                    sh "sudo groupadd Finance || true"
+                    sh "sudo groupadd Technology || true"
+                    firstName = input(message: 'First Name:', parameters: [string(name: 'First Name')])
+                    lastName = input(message: 'Last Name:', parameters: [string(name: 'Last Name')])
+                    department = input(message: 'Department:', parameters: [choice(choices: ['Accounting', 'Finance', 'Technology'], name: 'Department')])
+                    username = "${firstName}.${lastName}".toLowerCase()
+                    sh "sudo useradd -m -s /bin/bash -c '${firstName} ${lastName}' -g ${department} ${username}"
                     tempPassword = sh(script: 'date +%s | sha256sum | base64 | head -c 12', returnStdout: true).trim()
-                    sh "echo '${usuario}:${tempPassword}' | sudo chpasswd"
-                    sh "sudo passwd -e ${usuario}"
+                    sh "echo '${username}:${tempPassword}' | sudo chpasswd"
+                    sh "sudo passwd -e ${username}"
                 }
             }
         }
-        stage('Mostrar Información') {
+        stage('Display Information') {
             steps {
                 script {
                     echo """
                     ==========================
-                    Operador: ${operador.capitalize()}
-                    Usuario: ${usuario.capitalize()}
-                    Departamento: ${departamento.capitalize()}
-                    Contraseña Temporal: ${tempPassword}
+                    Operator: ${operator.capitalize()}
+                    User: ${username.capitalize()}
+                    Department: ${department.capitalize()}
+                    Temporary Password: ${tempPassword}
                     ==========================
                     """
                 }
