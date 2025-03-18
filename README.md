@@ -1,10 +1,8 @@
 # Linux_Users_Jenkins_Automation
 
-Declarative pipeline in Jenkins that allows us to create users within a Linux system.
+Declarative pipeline in Jenkins that allows us to create users within a Linux system, generating a temporary password that the operator can send to the end user. Below are the steps to configure and run the job.
 
-This Jenkins job allows you to create users on a Linux system, generating a temporary password that the operator can send to the end user. Below are the steps to configure and run the job.
-
-Prerequisites
+Prerequisites:
 Access to Jenkins:You must have access to a Jenkins instance with permissions to create and run pipelines.
 Sudo Permissions: The user under which Jenkins runs must have sudo permissions to execute the following commands without requiring a password: groupadd, useradd, chpasswd, passwd.
 Sudo Configuration:To prevent Jenkins from prompting for a password when running sudo commands, edit the /etc/sudoers file and add the following line (replace jenkins_user with the user under which Jenkins runs).
@@ -12,7 +10,7 @@ Sudo Configuration:To prevent Jenkins from prompting for a password when running
 This allows the Jenkins user to execute the necessary commands without a password.
 The user under which Jenkins runs is usually jenkins or the user you configured during installation.
 
-Usage Instructions
+Usage Instructions:
 Create a Pipeline in Jenkins:In Jenkins, go to New Item. Select Pipeline and give the job a name (e.g., Create Linux User). In the Pipeline section, select Pipeline script and paste the contents of the Jenkinsfile.
 Run the Job: Once the job is created, click Build Now. The pipeline will prompt for the following data:
 Operator Login: Enter the login of the operator running the job (e.g., ana.gomez).
