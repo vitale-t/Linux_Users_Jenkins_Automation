@@ -1,49 +1,31 @@
 pipeline {
     agent any
-
     stages {
         stage('Operador') {
             steps {
-                script {
-                    // Solicitar el login del operador
-                    operador = input(message: 'Login Operador:', parameters: [string(name: 'Operador')])
-                }
+                script { operador = input(message: 'Login Operador:', parameters: [string(name: 'Operador')]) }
             }
         }
-
         stage('Crear Grupos y Usuarios') {
             steps {
                 script {
-                    // Crear los grupos iniciales (si ya existen, no pasa nada)
                     sh "sudo groupadd Contabilidad || true"
                     sh "sudo groupadd Finanzas || true"
                     sh "sudo groupadd Tecnologia || true"
-
-                    // Solicitar datos del usuario a crear
                     nombre = input(message: 'Nombre:', parameters: [string(name: 'Nombre')])
                     apellido = input(message: 'Apellido:', parameters: [string(name: 'Apellido')])
                     departamento = input(message: 'Departamento:', parameters: [choice(choices: ['Contabilidad', 'Finanzas', 'Tecnologia'], name: 'Departamento')])
                     usuario = "${nombre}.${apellido}".toLowerCase()
-
-                    // Crear el usuario y asignarlo al grupo
                     sh "sudo useradd -m -s /bin/bash -c '${nombre} ${apellido}' -g ${departamento} ${usuario}"
-
-                    // Generar contraseña temporal
                     tempPassword = sh(script: 'date +%s | sha256sum | base64 | head -c 12', returnStdout: true).trim()
-
-                    // Asignar la contraseña al usuario
                     sh "echo '${usuario}:${tempPassword}' | sudo chpasswd"
-
-                    // Forzar al usuario a cambiar la contraseña en el primer login
                     sh "sudo passwd -e ${usuario}"
                 }
             }
         }
-
         stage('Mostrar Información') {
             steps {
                 script {
-                    // Mostrar información con la primera letra en mayúscula
                     echo """
                     ==========================
                     Operador: ${operador.capitalize()}
@@ -54,15 +36,6 @@ pipeline {
                     """
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo "Éxito: Usuario creado correctamente."
-        }
-        failure {
-            echo "Error: Hubo un problema en la ejecución del pipeline."
         }
     }
 }
