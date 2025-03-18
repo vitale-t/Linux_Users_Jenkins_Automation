@@ -1,0 +1,51 @@
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential Linux_Users_Jenkins_Automation
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/Linux_Users_Jenkins_Automation/Pipeline-Linux_Users_Jenkins_Automation@2/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/vitale-t/Linux_Users_Jenkins_Automation.git # timeout=10
+Fetching upstream changes from https://github.com/vitale-t/Linux_Users_Jenkins_Automation.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.1'
+using GIT_ASKPASS to set credentials Token
+ > git fetch --tags --force --progress -- https://github.com/vitale-t/Linux_Users_Jenkins_Automation.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 100bf2e0c2602085b6a6370cc1174551e8e44530 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 100bf2e0c2602085b6a6370cc1174551e8e44530 # timeout=10
+Commit message: "README.md"
+ > git rev-list --no-walk 100bf2e0c2602085b6a6370cc1174551e8e44530 # timeout=10
+Input requested
+Approved by admin
+
++ sudo groupadd Accounting
+groupadd: el grupo «Accounting» ya existe
++ true
++ sudo groupadd Finance
+groupadd: el grupo «Finance» ya existe
++ true
++ sudo groupadd Technology
+groupadd: el grupo «Technology» ya existe
++ true
+Input requested
+Approved by admin
+Input requested
+Approved by admin
+Input requested
+Approved by admin
++ sudo useradd -m -s /bin/bash -c Tesla Tech -g Technology tesla.tech
++ date +%s
++ sha256sum
++ head -c 12
++ base64
++ sudo chpasswd
++ echo tesla.tech:*****
++ sudo passwd -e tesla.tech
+passwd: contraseña cambiada.
+
+==========================
+Operator: Operador 1
+User: Tesla.tech
+Department: Technology
+Temporary Password: *****
+==========================
