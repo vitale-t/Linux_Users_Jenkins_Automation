@@ -2,7 +2,7 @@
 
 A declarative pipeline in Jenkins that allows you to create users on a Linux system, generating a temporary password that the operator can send to the end user. The steps to configure and run the job are detailed below.
 
-Access to Jenkins:You must have access to a Jenkins instance with permissions to create and run pipelines.
+Access to Jenkins: You must have access to a Jenkins instance with permissions to create and run pipelines.
 Sudo Permissions: The user under which Jenkins runs must have sudo permissions to execute the following commands without requiring a password: groupadd, useradd, chpasswd, passwd.
 Sudo Configuration:To prevent Jenkins from prompting for a password when running sudo commands, edit the /etc/sudoers file and add the following line (replace jenkins_user with the user under which Jenkins runs).
 "jenkins_user ALL=(ALL) NOPASSWD: /usr/sbin/groupadd, /usr/sbin/useradd, /usr/bin/chpasswd, /usr/bin/passwd"
