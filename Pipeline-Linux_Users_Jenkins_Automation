@@ -2,20 +2,71 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Operador') {
             steps {
-                echo 'Building..'
+                script {
+                    // Solicitar el login del operador
+                    operador = input(message: 'Login operador:', parameters: [string(name: 'operador')])
+                }
             }
         }
-        stage('Test') {
+
+        stage('Crear Grupos') {
             steps {
-                echo 'Testing..'
+                // Crear los grupos iniciales (si ya existen, no pasa nada)
+                sh "sudo groupadd contabilidad || true"
+                sh "sudo groupadd finanzas || true"
+                sh "sudo groupadd tecnologia || true"
             }
         }
-        stage('Deploy') {
+
+        stage('Usuario') {
             steps {
-                echo 'Deploying....'
+                script {
+                    // Solicitar datos del usuario a crear
+                    nombre = input(message: 'Nombre:', parameters: [string(name: 'nombre')])
+                    apellido = input(message: 'Apellido:', parameters: [string(name: 'apellido')])
+                    departamento = input(message: 'Departamento:', parameters: [choice(choices: ['contabilidad', 'finanzas', 'tecnologia'], name: 'departamento')])
+                    usuario = "${nombre}.${apellido}".toLowerCase()
+
+                    // Crear el usuario y asignarlo al grupo
+                    sh "sudo useradd -m -s /bin/bash -c '${nombre} ${apellido}' -g ${departamento} ${usuario}"
+                }
             }
+        }
+
+        stage('Contraseña') {
+            steps {
+                script {
+                    // Generar contraseña temporal usando un método simple
+                    tempPassword = sh(script: 'date +%s | sha256sum | base64 | head -c 12', returnStdout: true).trim()
+
+                    // Asignar la contraseña al usuario
+                    sh "echo '${usuario}:${tempPassword}' | sudo chpasswd"
+
+                    // Forzar al usuario a cambiar la contraseña en el primer login
+                    sh "sudo passwd -e ${usuario}"
+
+                    // Mostrar información
+                    echo """
+                    ==========================
+                    Operador: ${operador}
+                    Usuario: ${usuario}
+                    Departamento: ${departamento}
+                    Contraseña Temporal: ${tempPassword}
+                    ==========================
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Éxito."
+        }
+        failure {
+            echo "Error."
         }
     }
 }
